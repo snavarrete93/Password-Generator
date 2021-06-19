@@ -3,6 +3,7 @@ var generateBtn = document.querySelector("#generate");
 
 // Write password to the #password input
 function writePassword() {
+  
   var password = generatePassword();
   var passwordText = document.querySelector("#password");
 
@@ -14,8 +15,30 @@ function writePassword() {
 generateBtn.addEventListener("click", writePassword);
 
 function generatePassword() {
-  // return "bob";
+  // alert user of what criteria to input into password generator
+  window.alert("In the next few prompts, please select a password length (between 8 and 128 characters) and at least 1 additional criteria.");
+
+  var userLength = window.prompt("Enter password length (number between 8 and 128):");
+
+    // If user presses cancel, immediately end function
+  if (!userLength) {
+    return;
+  }
+
+  // insure input length is between 8 and 128 characters
+  if ((userLength >= 8) && (userLength <= 128)) {
+  console.log("good input")
+  } else {
+  // rerun program if input length criteria not met
+    window.alert("Length input not acceptable. Restarting program!");
+  }
+
+return userLength;
+  
 }
+
+
+  
 
 // function that gets a random lowercase letter
 function getRandomLower () {
@@ -43,7 +66,10 @@ function getRandomSpecial () {
 
 
 
-// console.log(getRandomLower());
-// console.log(getRandomUpper());
-// console.log(getRandomNumber());
-// console.log(getRandomSpecial());
+console.log(getRandomLower());
+console.log(getRandomUpper());
+console.log(getRandomNumber());
+console.log(getRandomSpecial());
+// console.log(typeof Number(gdrgd));
+console.log(+("bob"));
+console.log("8" <= 8);
