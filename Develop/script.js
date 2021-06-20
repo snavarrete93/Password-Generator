@@ -1,6 +1,9 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
 
+// Add event listener to generate button
+generateBtn.addEventListener("click", writePassword);
+
 // Write password to the #password input
 function writePassword() {
   
@@ -11,17 +14,12 @@ function writePassword() {
 
 }
 
-// Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
-
 function generatePassword() {
   // alert user of what criteria to input into password generator
   window.alert("In the next few prompts, please select a password length (between 8 and 128 characters) and at least 1 additional criteria.");
 
+  // prompt user to input password length
   var userLength = window.prompt("Enter password length (number between 8 and 128):");
-
-  console.log(userLength);
-  console.log(typeof userLength);
   
   // If user presses cancel, immediately end function
   if ((typeof userLength) == "object") {
@@ -29,18 +27,28 @@ function generatePassword() {
     return userLength;
   }
 
-  // insure input length is between 8 and 128 characters
+  // ensure password input length is between 8 and 128 characters
   if ((userLength >= 8) && (userLength <= 128)) {
-    console.log("good input")
+    window.alert("You've inputted a password length of " + userLength + " characters.");
   } else {
-    // rerun program if input length criteria not met
-    window.alert("Length input not acceptable. Restarting program!");
+    // Let computer choose random password length between 8 and 128 characters if input criteria is not met
+    var compRandomNumber = Math.ceil(Math.random() * 120) + 8;
+    window.alert("Length input not acceptable. The computer has randomly chosen a password length of " + compRandomNumber + " characters." );
+    userLength = compRandomNumber;
   }
 
   // keep track of the minimum number of password criteria required
   var numCriteriaRequired = 1;
-    // keep track of the number of password criteria selected
+  // keep track of the number of password criteria selected
   var numCriteriaSelected = 0;
+  //empty string which concatenates as user selects "Y" on different criteria
+  var passwordString = "";
+
+  // list all different type of character selections below
+  var lowercaseLetters = "abcdefghijklmnopqrstuvwxyz";
+  var uppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  var numCharacters = "0123456789";
+  var specialCharacters = " !”#$%&’()*+,-./:;<=>?@[\]^_`{|}~";
   
   // will prompt user whether they want to include lowercase letters inside of password  
   var isRandomLower = window.prompt('Password criteria selection page 1/4\n\nInclude lowercase letters inside password? (Enter "Y" or "N")\n\nMinimum number of criteria required: ' + numCriteriaRequired + '\nTotal number of criteria included so far: ' + numCriteriaSelected);
@@ -52,6 +60,7 @@ function generatePassword() {
   // If user enters "Y" for yes, increment numCriteriaSelected by 1
   } else if (isRandomLower.toUpperCase() === "Y") {
     numCriteriaSelected++;
+    passwordString += lowercaseLetters;
   }
 
   // will prompt user whether they want to include uppercase letters inside of password
@@ -64,6 +73,7 @@ function generatePassword() {
   // If user enters "Y" for yes, increment numCriteriaSelected by 1
   } else if (isRandomUpper.toUpperCase() === "Y") {
     numCriteriaSelected++;
+    passwordString += uppercaseLetters;
   }
 
   // will prompt user whether they want to include numbers inside of password
@@ -76,6 +86,7 @@ function generatePassword() {
   // If user enters "Y" for yes, increment numCriteriaSelected by 1
   } else if (isRandomNumber.toUpperCase() === "Y") {
     numCriteriaSelected++;
+    passwordString += numCharacters;
   }
   
   // will prompt user whether they want to include special characters inside of password
@@ -88,41 +99,23 @@ function generatePassword() {
   // If user enters "Y" for yes, increment numCriteriaSelected by 1
   } else if (isRandomSpecial.toUpperCase() === "Y") {
     numCriteriaSelected++;
+    passwordString += specialCharacters;
   }
   
-  
+  // ensure criteria minimum requirement of 1 is met. If not, end function
+  if (numCriteriaSelected < numCriteriaRequired) {
+    window.alert("Sorry, you didn't select a total of at least 1 password criteria as required. Please try generating a new password again.");
+    return null;
+  }
+
+  // generate random mixed string with all input criteria variables and concatenate it equal to the length of the user input length or computer-generated random input length
+  var mixedRandomString = "";
+  for (var i = 0; i < userLength; i++) {
+    mixedRandomString += passwordString.charAt(Math.floor(Math.random() * passwordString.length));
+  }
+
+  window.alert("Congratulations, your new password has been created! Press OK to see your new password!");
+
+  // return string with all password criteria
+  return mixedRandomString;
 }
-
-
-  
-
-// function that gets a random lowercase letter
-function getRandomLower () {
-  var lowercaseLetters = "abcdefghijklmnopqrstuvwxyz";
-  return lowercaseLetters[Math.floor((Math.random() * lowercaseLetters.length))];
-}
-
-// function that gets a random uppercase letter
-function getRandomUpper () {
-  var uppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  return uppercaseLetters[Math.floor((Math.random() * uppercaseLetters.length))];
-}
-
-// function that gets a random number
-function getRandomNumber () {
-  var numCharacters = "0123456789";
-  return numCharacters[Math.floor((Math.random() * numCharacters.length))];
-}
-
-// function that gets a random special character
-function getRandomSpecial () {
-  var specialCharacters = " !”#$%&’()*+,-./:;<=>?@[\]^_`{|}~";
-  return specialCharacters[Math.floor((Math.random() * specialCharacters.length))];
-}
-
-
-
-console.log(getRandomLower());
-console.log(getRandomUpper());
-console.log(getRandomNumber());
-console.log(getRandomSpecial());
